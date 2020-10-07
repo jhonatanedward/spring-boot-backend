@@ -57,6 +57,10 @@ public class Categoria implements Serializable{
 		return produtos;
 	}
 
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
