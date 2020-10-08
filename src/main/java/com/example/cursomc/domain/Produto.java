@@ -15,7 +15,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -33,9 +32,9 @@ public class Produto implements Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "id.produto")
 	private Set<ItemPedido> itens = new HashSet<>();
-
+	
+	@JsonIgnore
 	// Do outro lado da associacao ja foi buscado os objetos
-	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name = "produto_categoria",
 			// Coluna da entidade produto
