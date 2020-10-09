@@ -24,9 +24,12 @@ public class CategoriaService {
 		
 	public Categoria find(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElseThrow(()-> new ObjectNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()
-				));
+		return verifyOptional(obj, id);
+	}
+	
+	private Categoria verifyOptional(Optional<Categoria> obj, Integer id) {
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
 	}
 	
 	public Categoria insert(Categoria obj) {
@@ -35,10 +38,11 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria obj) {
+		Optional<Categoria> newObj = repo.findById(obj.getId());
 		
-		find(obj.getId());
-		
-		return repo.save(obj);
+		updateData(verifyOptional(newObj, obj.getId()), obj);;
+
+		return repo.save(newObj.get());
 	}
 
 	public void delete(Integer id) {
@@ -61,5 +65,9 @@ public class CategoriaService {
 	
 	public Categoria fromDto(CategoriaDto objDto) {
 		return new Categoria(objDto.getId(), objDto.getNome());
+	}
+	
+	private void updateData(Categoria newObj, Categoria obj) {
+		newObj.setNome(obj.getNome());
 	}
 }
